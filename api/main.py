@@ -20,7 +20,7 @@ model = joblib.load("artifacts/model.pkl")
 scaler = joblib.load("artifacts/scaler.pkl")
 
 
-# Define request schema
+# Request schema
 class PredictionRequest(BaseModel):
     features: list
 
