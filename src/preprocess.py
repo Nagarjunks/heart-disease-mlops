@@ -1,44 +1,58 @@
-"""
-preprocess.py
-
-This file contains all data preprocessing logic.
-Keeping preprocessing separate ensures reproducibility
-and clean MLOps practices.
-"""
-
 import pandas as pd
+from sklearn.compose import ColumnTransformer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import StandardScaler, OneHotEncoder
 from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
 
-
-def load_and_preprocess_data(csv_path):
+def preprocess_data(df: pd.DataFrame):
     """
-    Loads the heart disease dataset and performs preprocessing.
+    Cleans and preprocesses the heart disease data.
 
-    Steps:
-    1. Load CSV
-    2. Separate features and target
-    3. Scale numerical features
-    4. Split into train and test sets
+    Args:
+        df: Raw data as a pandas DataFrame.
 
     Returns:
-        X_train, X_test, y_train, y_test, scaler
+        A tuple containing:
+        - X_train, X_test, y_train, y_test
+        - The preprocessing pipeline object.
     """
-
-    # Load dataset
-    df = pd.read_csv(csv_path)
-
-    # Separate features and target
+    # Separate target variable
     X = df.drop("target", axis=1)
     y = df["target"]
 
-    # Feature scaling
-    scaler = StandardScaler()
-    X_scaled = scaler.fit_transform(X)
+    # Identify categorical and numerical features
+    categorical_features = ['sex', 'cp', 'fbs', 'restecg', 'exang', 'slope', 'ca', 'thal']
+    numerical_features = ['age', 'trestbps', 'chol', 'thalach', 'oldpeak']
 
-    # Train-test split
-    X_train, X_test, y_train, y_test = train_test_split(
-        X_scaled, y, test_size=0.2, random_state=42
+    # Create preprocessing pipelines for both feature types
+    numerical_transformer = StandardScaler()
+    categorical_transformer = OneHotEncoder(handle_unknown='ignore')
+
+    # Create a preprocessor object using ColumnTransformer
+    preprocessor = ColumnTransformer(
+        transformers=[
+            ('num', numerical_transformer, numerical_features),
+            ('cat', categorical_transformer, categorical_features)
+        ],
+        remainder='passthrough'
     )
 
-    return X_train, X_test, y_train, y_test, scaler
+    # Split data into training and testing sets
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42, stratify=y)
+    
+    return X_train, X_test, y_train, y_test, preprocessor
+
+if __name__ == '__main__':
+    # Example of how to use the preprocessor
+    df = pd.read_csv('data/heart.csv')
+    X_train, X_test, y_train, y_test, preprocessor_pipeline = preprocess_data(df)
+
+    # Fit and transform the training data
+    X_train_processed = preprocessor_pipeline.fit_transform(X_train)
+    
+    # Transform the test data
+    X_test_processed = preprocessor_pipeline.transform(X_test)
+
+    print("Data preprocessed successfully.")
+    print("X_train shape:", X_train_processed.shape)
+    print("X_test shape:", X_test_processed.shape)
