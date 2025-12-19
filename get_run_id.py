@@ -1,4 +1,3 @@
-
 import mlflow
 
 # Set the tracking URI to the local mlruns directory
@@ -16,7 +15,7 @@ runs = mlflow.search_runs(
     experiment_ids=[experiment.experiment_id],
     filter_string="params.model_type = 'LogisticRegression'",
     order_by=["start_time desc"],
-    max_results=1
+    max_results=1,
 )
 
 if not runs.empty:

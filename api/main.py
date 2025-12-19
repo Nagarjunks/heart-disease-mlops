@@ -36,7 +36,7 @@ try:
     preprocessor = joblib.load(preprocessor_path)
     
     # Path to the logged model
-    model_path = "mlruns/1/models/m-ba68c2363d994f00814a7accdec78972/artifacts/model.pkl"
+    model_path = "mlruns/2/models/m-d588745fcc0b4960897a74ec63ecd840/artifacts/model.pkl"
     model = joblib.load(model_path)
 
 except FileNotFoundError as e:
