@@ -70,7 +70,7 @@ def test_training_script_main(mock_preprocess, mock_read_csv, mock_joblib, mock_
     main()
 
     # Assert that MLflow experiment was set
-    mock_mlflow.set_experiment.assert_called_with("Heart Disease Prediction")
+    mock_mlflow.set_experiment.assert_called_with(experiment_name="Heart Disease V2")
     
     # Assert that MLflow runs were started
     assert mock_mlflow.start_run.call_count == 2 # For two models
