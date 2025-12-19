@@ -7,7 +7,6 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, precision_score, recall_score, roc_auc_score
-from sklearn.pipeline import Pipeline
 
 from preprocess import preprocess_data
 
@@ -55,13 +54,11 @@ def main():
 
     if experiment is None:
 
-        experiment_id = mlflow.create_experiment(experiment_name)
+        mlflow.create_experiment(experiment_name)
 
         mlflow.set_experiment(experiment_name=experiment_name)
 
     else:
-
-        experiment_id = experiment.experiment_id
 
         mlflow.set_experiment(experiment_name=experiment_name)
 
