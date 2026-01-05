@@ -6,3 +6,9 @@ fastapi
 uvicorn
 joblib
 pytest
+matplotlib
+seaborn
+ruff
+python-multipart
+prometheus-client
+prometheus-fastapi-instrumentator
