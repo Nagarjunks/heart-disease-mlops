@@ -231,4 +231,3 @@ The pre-configured "Heart Disease ML Model Monitoring" dashboard includes:
 │ (Port 8000) │     metrics       │ (Port 9090)│                 │ (Port   │
 └─────────────┘                   └────────────┘                 │  3000)  │
                                                                  └─────────┘
----
