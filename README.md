@@ -114,8 +114,6 @@ A GitHub Actions workflow (`.github/workflows/github-actions.yml`) is configured
 -   **Run unit tests:** Executes `pytest tests/`.
 -   **Train model:** Runs `python -m src.train` to ensure the training process is functional and logs new experiments to MLflow.
 
-**CI/CD Workflow Screenshot:**
-![CI/CD Workflow Screenshot Placeholder](path/to/ci-cd-workflow-screenshot.png)
 
 ## 9. Deployment (Kubernetes)
 
@@ -138,9 +136,6 @@ kubectl get services
 kubectl get services heart-disease-api-service
 ```
 Once the external IP is available, the API can be accessed at `http://<EXTERNAL-IP>/docs`.
-
-**Deployment Screenshots:**
-![Kubernetes Deployment Screenshot Placeholder](path/to/kubernetes-deployment-screenshot.png)
 
 ## 10. Monitoring & Logging
 
