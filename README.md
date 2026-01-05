@@ -231,17 +231,4 @@ The pre-configured "Heart Disease ML Model Monitoring" dashboard includes:
 │ (Port 8000) │     metrics       │ (Port 9090)│                 │ (Port   │
 └─────────────┘                   └────────────┘                 │  3000)  │
                                                                  └─────────┘
-```
-
-## 11. Deliverables
-
--   **GitHub Repository:** All code, Dockerfile, `requirements.txt`, Jupyter notebooks (`notebooks/eda.ipynb`), `tests/` folder with unit tests, `.github/workflows/github-actions.yml`, and `k8s` manifests.
-    -   Link to Code Repository: <YOUR_REPO_LINK_HERE>
--   **Cleaned dataset and download script/instructions:** The dataset `data/heart.csv` is included.
--   **Jupyter notebooks/scripts (EDA, training, inference):** `notebooks/eda.ipynb`, `src/preprocess.py`, `src/train.py`, `src/inference.py` (placeholder, not implemented as a separate script, logic is in API).
--   **Screenshot folder for reporting:** `reports/figures/` contains EDA plots. Placeholders for CI/CD and deployment screenshots are in this README.
--   **Final written report:** This README.md serves as the report.
--   **Deployed API URL:** Instructions provided for local deployment and verification.
--   **Short video containing an end-to-end pipeline:** (Cannot be provided by the agent.)
-
 ---
