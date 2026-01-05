@@ -231,11 +231,11 @@ The pre-configured "Heart Disease ML Model Monitoring" dashboard includes:
 ### Monitoring Architecture
 
 ```
-┌─────────────┐     metrics      ┌────────────┐     queries     ┌─────────┐
+┌─────────────┐     metrics       ┌────────────┐     queries     ┌─────────┐
 │  FastAPI    │ ─────────────────>│ Prometheus │ ───────────────>│ Grafana │
-│  (Port 8000)│    /metrics       │ (Port 9090)│                 │ (Port   │
+│ (Port 8000) │     metrics       │ (Port 9090)│                 │ (Port   │
 └─────────────┘                   └────────────┘                 │  3000)  │
-                                                                  └─────────┘
+                                                                 └─────────┘
 ```
 
 ## 11. Deliverables
@@ -250,4 +250,3 @@ The pre-configured "Heart Disease ML Model Monitoring" dashboard includes:
 -   **Short video containing an end-to-end pipeline:** (Cannot be provided by the agent.)
 
 ---
-**Note:** For a complete end-to-end deployment with screenshots and a video, some manual steps and external tools are required beyond the agent's capabilities.
