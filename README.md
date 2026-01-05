@@ -19,7 +19,12 @@ This project implements an end-to-end MLOps pipeline for predicting heart diseas
 -   **CI/CD Pipeline:** GitHub Actions workflow for linting, testing, and model training.
 -   **Model Containerization:** FastAPI-based prediction API packaged as a Docker image.
 -   **Production Deployment:** Kubernetes manifests for deploying the Dockerized API.
--   **Monitoring & Logging:** Basic request logging for the prediction API.
+-   **Monitoring & Logging:**
+    -   Request/response logging for debugging
+    -   Prometheus metrics for ML model monitoring
+    -   Pre-configured Grafana dashboards
+    -   Docker Compose stack for local monitoring
+    -   Kubernetes monitoring manifests for production
 
 ## 3. Setup & Installation
 
@@ -139,11 +144,99 @@ Once the external IP is available, the API can be accessed at `http://<EXTERNAL-
 
 ## 10. Monitoring & Logging
 
--   **API Logging:** The FastAPI application (`api/main.py`) integrates Python's `logging` module to record incoming requests, prediction results, and any errors. Logs are output to `stdout`, which can be collected by container orchestration systems.
--   **Monitoring:** For a full monitoring solution (e.g., Prometheus and Grafana), additional configuration would be required within the Kubernetes cluster to scrape metrics from the API and visualize them. This would involve:
-    -   Instrumenting the FastAPI app with a Prometheus client library to expose custom metrics.
-    -   Deploying Prometheus to collect these metrics.
-    -   Deploying Grafana to create dashboards for visualization.
+### API Logging
+The FastAPI application ([api/main.py](api/main.py)) integrates Python's `logging` module to record incoming requests, prediction results, and any errors. Logs are output to `stdout`, which can be collected by container orchestration systems.
+
+### Prometheus Monitoring
+The application is instrumented with Prometheus metrics to track:
+
+**Custom ML Metrics:**
+- `heart_disease_predictions_total`: Counter tracking total predictions by label (0/1)
+- `heart_disease_prediction_confidence`: Histogram of prediction confidence scores
+- `heart_disease_prediction_errors_total`: Counter tracking errors by type (model_not_loaded, preprocessing_error, prediction_error)
+- `heart_disease_active_requests`: Gauge tracking concurrent requests
+- `heart_disease_model_loaded`: Gauge indicating model load status (1=loaded, 0=failed)
+
+**Standard HTTP Metrics** (via prometheus-fastapi-instrumentator):
+- Request duration histograms
+- Request count by status code
+- Request size/response size metrics
+
+**Metrics Endpoint:** Available at `http://localhost:8000/metrics`
+
+### Running with Docker Compose (Recommended)
+
+The complete monitoring stack (API + Prometheus + Grafana) can be started with:
+
+```bash
+docker-compose up -d
+```
+
+This will start:
+- **FastAPI Application** on [http://localhost:8000](http://localhost:8000)
+- **Prometheus** on [http://localhost:9090](http://localhost:9090)
+- **Grafana** on [http://localhost:3000](http://localhost:3000) (username: `admin`, password: `admin`)
+
+**View the monitoring dashboard:**
+1. Access Grafana at [http://localhost:3000](http://localhost:3000)
+2. Login with admin/admin
+3. Navigate to Dashboards → "Heart Disease ML Model Monitoring"
+
+**Stop the monitoring stack:**
+```bash
+docker-compose down
+```
+
+### Kubernetes Monitoring Deployment
+
+For Kubernetes deployments, additional manifests are provided:
+
+```bash
+# Deploy the API
+kubectl apply -f k8s/deployment.yaml
+kubectl apply -f k8s/service.yaml
+
+# Deploy Prometheus
+kubectl apply -f k8s/prometheus-configmap.yaml
+kubectl apply -f k8s/prometheus-deployment.yaml
+
+# Deploy Grafana
+kubectl apply -f k8s/grafana-deployment.yaml
+```
+
+**Access monitoring services:**
+```bash
+# Get Prometheus external IP
+kubectl get service prometheus
+
+# Get Grafana external IP
+kubectl get service grafana
+```
+
+### Grafana Dashboard Features
+
+The pre-configured "Heart Disease ML Model Monitoring" dashboard includes:
+
+1. **Model Status** - Real-time model health indicator
+2. **Prediction Rate** - Predictions per second by label
+3. **Total Predictions** - Cumulative prediction count
+4. **Active Requests** - Current concurrent requests
+5. **Prediction Distribution** - Pie chart of prediction labels
+6. **Prediction Confidence Percentiles** - p50, p90, p95, p99 confidence scores
+7. **Error Rate by Type** - Tracking different error categories
+8. **Request Latency Percentiles** - API response time distribution
+9. **HTTP Request Rate** - Requests per second by status code
+10. **API Availability** - Uptime based on 5xx errors
+
+### Monitoring Architecture
+
+```
+┌─────────────┐     metrics      ┌────────────┐     queries     ┌─────────┐
+│  FastAPI    │ ─────────────────>│ Prometheus │ ───────────────>│ Grafana │
+│  (Port 8000)│    /metrics       │ (Port 9090)│                 │ (Port   │
+└─────────────┘                   └────────────┘                 │  3000)  │
+                                                                  └─────────┘
+```
 
 ## 11. Deliverables
 

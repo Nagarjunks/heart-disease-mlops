@@ -137,3 +137,7 @@ temp_eda.py
 get_run_id.py
 heart_disease_mlops.egg-info/
 src/heart_disease_mlops.egg-info/
+
+# Monitoring data volumes (created by docker-compose)
+prometheus_data/
+grafana_data/

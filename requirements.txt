@@ -10,3 +10,5 @@ matplotlib
 seaborn
 ruff
 python-multipart
+prometheus-client
+prometheus-fastapi-instrumentator

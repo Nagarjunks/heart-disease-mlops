@@ -41,7 +41,3 @@ jobs:
 
       - name: Train model
         run: python -m src.train
-
-    # In a real-world scenario, you would add steps here to:
-    # - Build and push the Docker image to a registry
-    # - Deploy the application
